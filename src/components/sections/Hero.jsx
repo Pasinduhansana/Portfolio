@@ -80,7 +80,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="text-gray-300 text-lg mb-8 max-w-lg"
+            className="text-gray-300 text-[16px] mb-8 max-w-lg"
           >
             I create beautiful, functional, and responsive websites using modern
             technologies. Specializing in creating unique digital experiences
@@ -92,13 +92,19 @@ const Hero = () => {
             transition={{ delay: 0.5, duration: 0.8 }}
             className="flex flex-wrap gap-4"
           >
-            <a href="#projects" className="btn btn-primary">
+            <button
+              href="#projects"
+              className="flex flex-row items-center h-[40px] btn btn-primary"
+            >
               View My Work
               <ArrowRight size={18} />
-            </a>
-            <a href="#contact" className="btn btn-outline">
+            </button>
+            <button
+              href="#contact"
+              className="flex flex-row items-center h-[40px] btn btn-outline"
+            >
               Contact Me
-            </a>
+            </button>
           </motion.div>
         </motion.div>
 

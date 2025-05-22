@@ -140,7 +140,7 @@ const Header = () => {
               ))}
               <a
                 href="#contact"
-                className="btn btn-primary w-full text-center"
+                className="btn btn-primary py-0 w-full text-center"
                 onClick={() => scrollToSection("contact")}
               >
                 Let's Talk

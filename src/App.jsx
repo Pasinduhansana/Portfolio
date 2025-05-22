@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/layout/Header';
-import Hero from './components/sections/Hero';
-import Projects from './components/sections/Projects';
-import ProjectDetails from './components/sections/ProjectDetails';
-import About from './components/sections/About';
-import Skills from './components/sections/Skills';
-import Contact from './components/sections/Contact';
-import Footer from './components/layout/Footer';
-import Cursor from './components/ui/Cursor';
-import { AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/layout/Header";
+import Hero from "./components/sections/Hero";
+import Projects from "./components/sections/Projects";
+import ProjectDetails from "./components/sections/ProjectDetails";
+import About from "./components/sections/About";
+import Skills from "./components/sections/Skills";
+import Contact from "./components/sections/Contact";
+import Footer from "./components/layout/Footer";
+import Cursor from "./components/ui/Cursor";
+import { AnimatePresence } from "framer-motion";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -21,14 +21,14 @@ function App() {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
 
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1000);
 
     return () => {
-      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener("resize", checkMobile);
       clearTimeout(timer);
     };
   }, []);
@@ -47,17 +47,20 @@ function App() {
         {!isMobile && <Cursor />}
         <Header />
         <Routes>
-          <Route path="/" element={
-            <main>
-              <AnimatePresence>
-                <Hero />
-                <Projects />
-                <About />
-                <Skills />
-                <Contact />
-              </AnimatePresence>
-            </main>
-          } />
+          <Route
+            path="/"
+            element={
+              <main>
+                <AnimatePresence>
+                  <Hero />
+                  <Projects />
+                  <About />
+                  <Skills />
+                  <Contact />
+                </AnimatePresence>
+              </main>
+            }
+          />
           <Route path="/projects" element={<ProjectDetails />} />
         </Routes>
         <Footer />
