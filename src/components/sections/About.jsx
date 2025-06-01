@@ -136,7 +136,7 @@ const About = () => {
   return (
     <section
       id="about"
-      className="section bg-gradient-to-b from-dark-300 to-dark-400 dark:from-gray-100 dark:to-white"
+      className="section bg-gradient-to-b  from-dark-300 to-dark-400 dark:from-gray-50 dark:to-gray-50"
     >
       <div className="container mx-auto px-4" ref={ref}>
         <motion.div
@@ -154,7 +154,7 @@ const About = () => {
             </h3>
             <div className="relative">
               {/* Timeline line with gradient */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary-500 to-accent-500 rounded-full"></div>
+              <div className="absolute left-0 lg:left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary-500 to-accent-500 rounded-full"></div>
 
               {/* Experience items */}
               {experience.map((exp, index) => (
@@ -163,17 +163,19 @@ const About = () => {
                   variants={itemVariants}
                   initial="hidden"
                   animate={inView ? "visible" : "hidden"}
-                  className={`relative flex items-center mb-12 ${
-                    index % 2 === 0 ? "justify-end" : "justify-start"
+                  className={`relative flex items-center mb-6 overflow-hidden ${
+                    index % 2 === 0 ? "md:justify-end" : "justify-start"
                   }`}
                 >
                   <div
-                    className={`w-5/12 ${
-                      index % 2 === 0 ? "text-right pr-8" : "pl-8"
+                    className={` ${
+                      index % 2 === 0
+                        ? "pl-5 md:text-right md:pr-8"
+                        : "pl-5 md:pl-8"
                     }`}
                   >
                     <motion.div
-                      className="bg-dark-200 dark:bg-white p-6 rounded-xl w-[430px] shadow-xl hover:shadow-2xl text-left transition-all duration-300 border border-white/10 dark:border-gray-200/10"
+                      className="bg-dark-200 dark:bg-white p-6 rounded-xl w-full md:w-[430px] shadow-sm md:shadow-xl md:hover:shadow-2xl text-left transition-all duration-300 border border-white/10 dark:border-gray-200/10"
                       whileHover={{ y: -5 }}
                     >
                       <div className="flex items-center gap-3 mb-4">
@@ -219,9 +221,9 @@ const About = () => {
                     initial={{ scale: 0 }}
                     animate={inView ? { scale: 1 } : {}}
                     transition={{ delay: 0.2 }}
-                    className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-primary-500 rounded-full border-2 border-white dark:border-gray-100"
+                    className="absolute z-50 left-0 lg:left-1/2 transform md:-translate-x-1/2 -ml-[8px]  w-4 h-4 bg-primary-500 rounded-full border-2 border-white dark:border-gray-100"
                   >
-                    <div className="absolute w-8 h-8 bg-primary-500/20 rounded-full -translate-x-2 -translate-y-2 animate-ping"></div>
+                    <div className="absolute w-8 h-8  bg-primary-500/20 rounded-full -translate-x-2  -translate-y-2 animate-ping"></div>
                   </motion.div>
                 </motion.div>
               ))}

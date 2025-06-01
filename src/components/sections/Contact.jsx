@@ -68,7 +68,7 @@ const Contact = () => {
   return (
     <section
       id="contact"
-      className="section bg-dark-300 dark:bg-gray-100 text-[14px]"
+      className="section bg-dark-300 dark:bg-gray-50 text-[14px]"
     >
       <div className="container mx-auto px-4">
         <motion.div

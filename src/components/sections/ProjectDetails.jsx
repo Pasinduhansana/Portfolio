@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Minus, ExternalLink, Github } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Minus, ExternalLink, Github } from "lucide-react";
+import disastermanagement from "../../assets/disastermanagement.png";
+import tracker_img from "../../assets/image.jpeg";
+import stellarQuaest from "../../assets/StellarQuest.png";
 
 const ProjectDetails = () => {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -9,31 +12,50 @@ const ProjectDetails = () => {
   const projects = [
     {
       id: 1,
-      title: "E-Commerce Platform",
-      thumbnail: "https://images.pexels.com/photos/18069362/pexels-photo-18069362.jpeg",
-      description: "A full-featured e-commerce platform with real-time inventory management.",
-      demoUrl: "https://example.com/demo1",
-      githubUrl: "https://github.com/example/project1",
-      tech: ["React", "Node.js", "MongoDB"]
+      title: " Supplier PO Tracker V0.1",
+      thumbnail: tracker_img,
+      description:
+        "Developed a robust C#/WPF desktop application for end-to-end supplier purchase order tracking, featuring a dynamic dashboard, real-time notifications, and risk mitigation. Enhanced operational transparency, reduced manual tasks, and improved supplier collaboration with key functionalities comparable to leading tracking software.",
+      demoUrl: "",
+      githubUrl: "https://github.com/Pasinduhansana/PO-Tracker.git",
+      tech: [
+        "C#",
+        "WPF",
+        "Desktop Application",
+        "Real-time Notifications",
+        "Dashboard UI",
+        "Supplier Management",
+      ],
     },
     {
       id: 2,
-      title: "Task Management App",
-      thumbnail: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg",
-      description: "Collaborative task management with real-time updates.",
-      demoUrl: "https://example.com/demo2",
-      githubUrl: "https://github.com/example/project2",
-      tech: ["React", "Firebase", "Tailwind"]
+      title: "Natural Disaster Management System",
+      thumbnail: disastermanagement,
+      description:
+        "Built a disaster management app featuring community funding, real-time reporting, dashboard, and AI-based disaster prediction.",
+      demoUrl: "https://guardianearth.netlify.app/",
+      githubUrl:
+        "https://github.com/Pasinduhansana/Natural-Disaster-Management-System.git",
+      tech: ["MERN", "TailwindCSS", "Python", "Stripe", "AI Prediction Model"],
     },
+
     {
       id: 3,
-      title: "Weather Dashboard",
-      thumbnail: "https://images.pexels.com/photos/1118873/pexels-photo-1118873.jpeg",
-      description: "Real-time weather tracking with interactive maps.",
-      demoUrl: "https://example.com/demo3",
-      githubUrl: "https://github.com/example/project3",
-      tech: ["React", "OpenWeather API", "Chart.js"]
-    }
+      title: "StellarQuest - Astronomy E-Commerce Web App",
+      thumbnail: stellarQuaest,
+      description:
+        "Interactive space platform combining e-commerce, educational resources, and community engagement with secure backend services and immersive UI.",
+      demoUrl: "",
+      githubUrl: "https://github.com/Pasinduhansana/StellarQuest.git",
+      tech: [
+        "React",
+        "Firebase",
+        "TailwindCSS",
+        "Spring Boot",
+        "Next.js",
+        "Three.js",
+      ],
+    },
   ];
 
   useEffect(() => {
@@ -44,8 +66,8 @@ const ProjectDetails = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
+      transition: { staggerChildren: 0.1 },
+    },
   };
 
   const itemVariants = {
@@ -53,8 +75,8 @@ const ProjectDetails = () => {
     visible: {
       x: 0,
       opacity: 1,
-      transition: { duration: 0.5 }
-    }
+      transition: { duration: 0.5 },
+    },
   };
 
   return (
@@ -62,7 +84,7 @@ const ProjectDetails = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Project List Sidebar */}
-          <motion.div 
+          <motion.div
             className="lg:col-span-4 bg-dark-200 dark:bg-white rounded-xl p-4 h-[calc(100vh-8rem)] overflow-y-auto"
             variants={containerVariants}
             initial="hidden"
@@ -76,8 +98,8 @@ const ProjectDetails = () => {
                   variants={itemVariants}
                   className={`cursor-pointer rounded-lg p-3 transition-all duration-300 ${
                     selectedProject?.id === project.id
-                      ? 'bg-primary-500/10 border border-primary-500/30'
-                      : 'hover:bg-dark-100 dark:hover:bg-gray-50'
+                      ? "bg-primary-500/10 border border-primary-500/30"
+                      : "hover:bg-dark-100 dark:hover:bg-gray-50"
                   }`}
                   onClick={() => setSelectedProject(project)}
                 >
@@ -176,7 +198,9 @@ const ProjectDetails = () => {
                           <div className="absolute inset-0 bg-gradient-to-t from-dark-300/80 to-transparent" />
                         </div>
                         <div className="p-6">
-                          <h2 className="text-2xl font-bold mb-4">{selectedProject.title}</h2>
+                          <h2 className="text-2xl font-bold mb-4">
+                            {selectedProject.title}
+                          </h2>
                           <p className="text-gray-400 dark:text-gray-600 mb-6">
                             {selectedProject.description}
                           </p>

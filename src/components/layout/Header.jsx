@@ -33,7 +33,7 @@ const Header = () => {
 
   const navItems = [
     { name: "Home", id: "home" },
-    { name: "Projects", id: "projects" },
+    { name: "Projects", id: "projects", isLink: true, url: "/projects" },
     { name: "About", id: "about" },
     { name: "Skills", id: "skills" },
     { name: "Contact", id: "contact" },
@@ -52,7 +52,7 @@ const Header = () => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-2xl font-bold"
+          className="flex flex-row text-2xl font-bold"
         >
           <a href="#home" className="gradient-text">
             PH
@@ -66,15 +66,27 @@ const Header = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="hidden md:flex items-center space-x-8"
         >
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => scrollToSection(item.id)}
-              className="text-white dark:text-gray-800 hover:text-primary-500 dark:hover:text-primary-600 transition-colors duration-300"
-            >
-              {item.name}
-            </button>
-          ))}
+          {navItems.map((item) =>
+            item.isLink ? (
+              <a
+                key={item.id}
+                href={item.url}
+                className="text-white dark:text-gray-800 hover:text-primary-500 dark:hover:text-primary-600 transition-colors duration-300 relative inline-block group"
+              >
+                {item.name}
+                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            ) : (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className="text-white dark:text-gray-800 hover:text-primary-500 dark:hover:text-primary-600 transition-colors duration-300 relative inline-block group"
+              >
+                {item.name}
+                <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 group-hover:w-full"></span>
+              </button>
+            )
+          )}
 
           {/* Theme Toggle */}
           <button
@@ -89,7 +101,7 @@ const Header = () => {
             )}
           </button>
 
-          <a href="#contact" className="btn btn-primary">
+          <a href="#contact" className="h-[36px] btn btn-primary">
             Let's Talk
           </a>
         </motion.nav>
@@ -126,25 +138,39 @@ const Header = () => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden bg-dark-200 dark:bg-white border-t border-white/10 dark:border-gray-200"
+            className="md:hidden  bg-dark-200 dark:bg-white border-t border-white/10 dark:border-gray-200"
           >
             <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className="text-white dark:text-gray-800 py-2 hover:text-primary-500 dark:hover:text-primary-600 transition-colors duration-300"
+              {navItems.map((item) =>
+                item.isLink ? (
+                  <button>
+                    <a
+                      key={item.id}
+                      href={item.url}
+                      className="text-white dark:text-gray-800 py-2 hover:text-primary-500 dark:hover:text-primary-600 transition-colors duration-300"
+                    >
+                      {item.name}
+                    </a>{" "}
+                  </button>
+                ) : (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className="text-white dark:text-gray-800 py-2 hover:text-primary-500 dark:hover:text-primary-600 transition-colors duration-300"
+                  >
+                    {item.name}
+                  </button>
+                )
+              )}
+              <button>
+                <a
+                  href="#contact"
+                  className="h-[34px] w-[120px] btn btn-primary py-0 text-center"
+                  onClick={() => scrollToSection("contact")}
                 >
-                  {item.name}
-                </button>
-              ))}
-              <a
-                href="#contact"
-                className="btn btn-primary py-0 w-full text-center"
-                onClick={() => scrollToSection("contact")}
-              >
-                Let's Talk
-              </a>
+                  Let's Talk
+                </a>
+              </button>
             </div>
           </motion.div>
         )}

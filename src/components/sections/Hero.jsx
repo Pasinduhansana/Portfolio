@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronDown, ArrowRight } from "lucide-react";
-import image_path from "../../assets/Profile_PIC.jpeg";
+import { TypeAnimation } from "react-type-animation";
+import image_path from "../../assets/profileimage.png";
 
 const Hero = () => {
   const targetRef = useRef(null);
@@ -13,7 +14,7 @@ const Hero = () => {
   // Create transforms for parallax and face rotation effect
   const faceRotation = useTransform(scrollYProgress, [0, 1], [-25, 0]);
   const textY = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const imgScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  //const imgScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   // Container for the geometric shapes
   const shapeContainerRef = useRef(null);
@@ -44,7 +45,7 @@ const Hero = () => {
     <section
       id="home"
       ref={targetRef}
-      className="section min-h-screen pt-20 flex items-center relative overflow-hidden"
+      className="section min-h-screen md:pt-20 flex items-center relative overflow-hidden section dark:bg-gray-50"
     >
       <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Text content - left aligned */}
@@ -62,25 +63,38 @@ const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-primary-500 font-medium mb-4"
+            className="text-white font-medium mb-2 ml-1 dark:text-gray-800"
           >
             Hello, I'm
           </motion.p>
-          <motion.h1
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
             className="heading-xl mb-6"
           >
-            <span className="gradient-text">Pasindu Hansana</span>
+            <span className="gradient-text ">Pasindu Hansana</span>
             <br />
-            Web Developer & Designer
-          </motion.h1>
+            <TypeAnimation
+              sequence={[
+                "Web Developer",
+                2000,
+                "UI/UX Designer",
+                2000,
+                "Software Developer",
+                2000,
+              ]}
+              wrapper="span"
+              speed={50}
+              repeat={Infinity}
+              className="text-white dark:text-gray-600"
+            />
+          </motion.div>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="text-gray-300 text-[16px] mb-8 max-w-lg"
+            className="text-gray-300 text-[16px] mb-8 max-w-lg dark:text-gray-600"
           >
             I create beautiful, functional, and responsive websites using modern
             technologies. Specializing in creating unique digital experiences
@@ -135,33 +149,43 @@ const Hero = () => {
           </div>
 
           {/* Face image with rotation effect */}
-          <motion.div
+          {/* <motion.div
             className="relative z-10 mx-auto  max-w-sm lg:max-w-md xl:max-w-lg"
             style={{
               rotateY: faceRotation,
               scale: imgScale,
             }}
+          > */}
+          <motion.div
+            className="relative order-1 lg:order-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
             <img
               src={image_path}
               alt="Developer Portrait"
-              className="w-full h-auto object-cover rounded-3xl max-h-[450px] max-w-[400px] shadow-2xl rotate-3 border-4 border-dark-200"
+              className="w-full lg:ml-20 h-auto object-cover max-w-[350px] ml-4 md:ml-0  rounded-3xl md:max-h-[500px] md:max-w-[400px] shadow-2xl dark:shadow-md dark:border-none rotate-3 border-4 border-dark-200"
             />
 
             {/* Overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-dark-300 to-transparent opacity-30 rounded-3xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-dark-300 to-transparent opacity-30 rounded-3xl dark:hidden"></div>
 
             {/* Tech stack decorative elements */}
-            <div className="absolute -left-6 -bottom-6 bg-dark-200 text-white p-4 rounded-xl shadow-lg border border-white/10 rotate-6">
+            <div className="absolute left-5 md:-left-6 bottom-5 md:-bottom-6 bg-dark-200 dark:bg-white text-white p-4 rounded-xl shadow-xl border border-white/10 rotate-6">
               <div className="text-xs font-medium text-primary-400">
                 Frontend
               </div>
-              <div className="text-sm font-semibold">React & Next.js</div>
+              <div className="text-sm font-semibold dark:text-gray-800">
+                React & Next.js
+              </div>
             </div>
 
-            <div className="absolute -right-4 -top-4 bg-dark-200 text-white p-4 rounded-xl shadow-lg border border-white/10 -rotate-6">
+            <div className="absolute -right-4 top-5 md:-top-4 bg-dark-200 text-white p-4 dark:bg-white rounded-xl shadow-lg border border-white/10 -rotate-6">
               <div className="text-xs font-medium text-accent-400">UI/UX</div>
-              <div className="text-sm font-semibold">Tailwind CSS</div>
+              <div className="text-sm font-semibold dark:text-gray-800">
+                Tailwind CSS
+              </div>
             </div>
           </motion.div>
         </motion.div>
@@ -172,7 +196,7 @@ const Hero = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 0.8 }}
-        className="absolute bottom-8 left-0 right-0 flex justify-center"
+        className="hidden absolute bottom-8 left-0 right-0 lg:flex justify-center"
       >
         <motion.div
           animate={{ y: [0, 10, 0] }}
@@ -188,8 +212,8 @@ const Hero = () => {
               .scrollIntoView({ behavior: "smooth" })
           }
         >
-          <span className="text-sm mb-2">Scroll Down</span>
-          <ChevronDown size={20} />
+          <span className="text-sm mb-2 dark:text-gray-600">Scroll Down</span>
+          <ChevronDown size={20} className="dark:text-gray-600" />
         </motion.div>
       </motion.div>
     </section>

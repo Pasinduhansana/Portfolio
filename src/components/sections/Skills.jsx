@@ -1,54 +1,84 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Code, Users, Brain, MessageSquare, Lightbulb, Puzzle } from 'lucide-react';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Code,
+  Users,
+  Brain,
+  MessageSquare,
+  Lightbulb,
+  Puzzle,
+  GitBranch,
+  Database,
+  Terminal,
+  Cpu,
+} from "lucide-react";
+import resumePDF from "../../assets/Pasindu Hansana CV.pdf";
 
 const Skills = () => {
-  const [activeTab, setActiveTab] = useState('coding');
+  const [activeTab, setActiveTab] = useState("coding");
 
   const skillCategories = {
     coding: {
-      title: 'Coding Skills',
+      title: "Coding Skills",
       skills: [
-        { name: 'React/Next.js', level: 95, icon: Code },
-        { name: 'JavaScript/TypeScript', level: 90, icon: Code },
-        { name: 'Node.js', level: 85, icon: Code },
-        { name: 'HTML/CSS/Tailwind', level: 95, icon: Code },
-      ]
+        { name: "React/Next.js", level: 85, icon: Code },
+        { name: "JavaScript/TypeScript", level: 90, icon: Code },
+        { name: "HTML/CSS/Tailwind", level: 95, icon: Code },
+        { name: "Node.js", level: 70, icon: Code },
+        { name: "C# / VB.Net", level: 90, icon: Code },
+        { name: "Python", level: 75, icon: Code },
+        { name: "Flutter / Xamarin.Forms", level: 50, icon: Code },
+        { name: "WPF-XAML", level: 85, icon: Code },
+        { name: "PHP", level: 80, icon: Code },
+        { name: "Java / C++", level: 75, icon: Code },
+        { name: ".NET Framework", level: 65, icon: Code },
+        { name: "Spring Boot", level: 60, icon: Code },
+      ],
     },
     professional: {
-      title: 'Professional Skills',
+      title: "Professional Skills",
       skills: [
-        { name: 'UI/UX Design', level: 90, icon: Brain },
-        { name: 'Project Management', level: 85, icon: Users },
-        { name: 'Team Leadership', level: 88, icon: Users },
-      ]
+        { name: "UI/UX Design (Figma, XD, Photoshop)", level: 90, icon: Brain },
+        { name: "Microsoft 365 & Office Suite", level: 95, icon: Brain },
+        { name: "VBA & Macros", level: 90, icon: Brain },
+        { name: "Power BI", level: 88, icon: Brain },
+        { name: "Power Apps", level: 85, icon: Brain },
+        { name: "Power Automate", level: 85, icon: Brain },
+        { name: "Project Management", level: 85, icon: Users },
+        { name: "Team Leadership", level: 88, icon: Users },
+      ],
     },
     general: {
-      title: 'General Skills',
+      title: "General Skills",
       skills: [
-        { name: 'Communication', level: 92, icon: MessageSquare },
-        { name: 'Problem Solving', level: 88, icon: Puzzle },
-        { name: 'Critical Thinking', level: 90, icon: Lightbulb },
-      ]
-    }
+        { name: "Communication", level: 92, icon: MessageSquare },
+        { name: "Problem Solving", level: 88, icon: Puzzle },
+        { name: "Critical Thinking", level: 90, icon: Lightbulb },
+        { name: "Git & GitHub", level: 90, icon: GitBranch },
+        { name: "Database (SQL, MySQL, SQLite)", level: 90, icon: Database },
+        { name: "NoSQL (Firebase, MongoDB)", level: 85, icon: Database },
+        { name: "Linux Basics", level: 40, icon: Terminal },
+        { name: "Hardware & System Config", level: 80, icon: Cpu },
+      ],
+    },
   };
 
   const tabVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { duration: 0.5 }
+      transition: { duration: 0.5 },
     },
-    exit: { 
+    exit: {
       opacity: 0,
       y: -20,
-      transition: { duration: 0.3 }
-    }
+      transition: { duration: 0.3 },
+    },
   };
 
   return (
-    <section id="skills" className="section bg-dark-300 dark:bg-gray-100">
+    <section id="skills" className="section bg-dark-300 dark:bg-gray-50">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -57,19 +87,21 @@ const Skills = () => {
           transition={{ duration: 0.6 }}
           className="max-w-4xl mx-auto"
         >
-          <h2 className="section-title text-center mb-16">Skills & Expertise</h2>
+          <h2 className="section-title text-center mb-16">
+            Skills & Expertise
+          </h2>
 
           {/* Tab Switcher */}
           <div className="flex justify-center mb-12">
-            <div className="bg-dark-200 dark:bg-white p-1 rounded-full flex">
+            <div className="md:bg-dark-200 md:dark:bg-white p-1 rounded-full flex flex-col gap-2 md:flex-row">
               {Object.keys(skillCategories).map((category) => (
                 <button
                   key={category}
                   onClick={() => setActiveTab(category)}
-                  className={`px-6 py-2 rounded-full transition-all duration-300 ${
+                  className={`px-6 py-2 rounded-full transition-all duration-300 border md:border-none ${
                     activeTab === category
-                      ? 'bg-primary-500 text-white'
-                      : 'text-gray-400 dark:text-gray-600 hover:text-white dark:hover:text-gray-900'
+                      ? "bg-primary-500 text-white"
+                      : "text-gray-400 dark:text-gray-600 hover:text-white dark:hover:text-gray-900"
                   }`}
                 >
                   {skillCategories[category].title}
@@ -100,7 +132,7 @@ const Skills = () => {
                     <skill.icon className="w-6 h-6 text-primary-500 mr-3" />
                     <h3 className="text-lg font-semibold">{skill.name}</h3>
                   </div>
-                  
+
                   {/* Radial Progress */}
                   <div className="relative pt-2">
                     <div className="flex mb-2 items-center justify-between">
@@ -123,15 +155,15 @@ const Skills = () => {
           </AnimatePresence>
 
           {/* CV Download Button */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mt-16 text-center"
           >
             <a
-              href="/path-to-your-cv.pdf"
-              download
+              href={resumePDF}
+              download="Pasindu_Hansana_Resume.pdf"
               className="inline-flex items-center gap-2 px-8 py-4 bg-dark-200 dark:bg-white rounded-full text-white dark:text-gray-900 font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 backdrop-blur-sm bg-opacity-50"
             >
               <svg

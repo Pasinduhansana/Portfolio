@@ -1,60 +1,94 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Github, ExternalLink, Folder } from 'lucide-react';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Github, ExternalLink, Folder } from "lucide-react";
+import disastermanagement from "../../assets/disastermanagement.png";
+import tracker_img from "../../assets/image.jpeg";
+import stellarQuaest from "../../assets/StellarQuest.png";
 
 const Projects = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const featuredProjects = [
     {
-      title: "E-Commerce Platform",
-      description: "A full-featured e-commerce platform with real-time inventory management, secure payments, and an intuitive admin dashboard.",
-      image: "https://images.pexels.com/photos/18069362/pexels-photo-18069362.jpeg",
-      tech: ["React", "Node.js", "MongoDB", "Stripe"],
-      liveDemo: "https://ecommerce-demo.com",
-      sourceCode: "https://github.com/username/ecommerce",
-      featured: true
+      title: "Supplier PO Tracker V0.1",
+      description:
+        "A robust C#/WPF desktop app for supplier PO tracking with real-time notifications, dashboard, and risk mitigation features.",
+      image: tracker_img, // Replace with actual image URL or import path
+      tech: [
+        "C#",
+        "WPF",
+        "Desktop Application",
+        "Real-time Notifications",
+        "Dashboard UI",
+        "Supplier Management",
+      ],
+      liveDemo: "", // Add if available
+      sourceCode: "https://github.com/Pasinduhansana/PO-Tracker.git",
+      featured: false,
     },
     {
-      title: "AI Content Generator",
-      description: "An AI-powered platform that generates high-quality content using advanced natural language processing.",
-      image: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg",
-      tech: ["React", "Python", "OpenAI", "Flask"],
-      liveDemo: "https://ai-content.demo.com",
-      sourceCode: "https://github.com/username/ai-content",
-      featured: true
-    }
+      title: "Natural Disaster Management System",
+      description:
+        "App for disaster reporting, community funding, dashboard features, and AI-based disaster prediction with real-time updates.",
+      image: disastermanagement, // Replace with actual image URL or import path
+      tech: ["MERN", "TailwindCSS", "Python", "Stripe", "AI Prediction Model"],
+      liveDemo: "https://guardianearth.netlify.app/",
+      sourceCode:
+        "https://github.com/Pasinduhansana/Natural-Disaster-Management-System.git",
+      featured: true,
+    },
+    {
+      title: "StellarQuest - Astronomy E-Commerce Web App",
+      description:
+        "Interactive space exploration platform with e-commerce, educational guides, and community features built with modern web technologies.",
+      image: stellarQuaest,
+      tech: [
+        "React",
+        "Firebase",
+        "TailwindCSS",
+        "Spring Boot",
+        "Next.js",
+        "Three.js",
+      ],
+      liveDemo: "", // Add if available
+      sourceCode: "https://github.com/Pasinduhansana/StellarQuest.git",
+      featured: true,
+    },
   ];
 
   const otherProjects = [
     {
-      title: "Task Management App",
-      description: "A collaborative task management tool with real-time updates and team features.",
-      tech: ["React", "Firebase", "Tailwind CSS"],
-      liveDemo: "https://tasks-demo.com",
-      sourceCode: "https://github.com/username/tasks"
+      title: "Staff Management System",
+      description:
+        "A web-based platform for managing employee records, leave requests, and attendance with role-based access.",
+      tech: ["Java", "MySQL", "HTML/CSS", "Servlets"],
+      liveDemo: "", // Add demo URL if available
+      sourceCode: "https://github.com/Pasinduhansana/staff-management-system",
     },
     {
-      title: "Weather Dashboard",
-      description: "Real-time weather tracking with interactive maps and forecasting.",
-      tech: ["React", "OpenWeather API", "Chart.js"],
-      liveDemo: "https://weather-demo.com",
-      sourceCode: "https://github.com/username/weather"
+      title: "Thread Analysis Dashboard",
+      description:
+        "A data visualization dashboard for analyzing thread production metrics and quality across units.",
+      tech: ["Power BI", "SQL", "Excel", "DAX"],
+      liveDemo: "", // Add demo URL if available
+      sourceCode: "https://github.com/Pasinduhansana/thread-analysis-dashboard",
     },
     {
-      title: "Portfolio Generator",
-      description: "A tool that helps developers create beautiful portfolios with minimal setup.",
-      tech: ["React", "Tailwind CSS", "Netlify"],
-      liveDemo: "https://portfolio-gen.demo.com",
-      sourceCode: "https://github.com/username/portfolio-gen"
+      title: "WRAPOS - Point of Sale System",
+      description:
+        "A custom POS solution for retail environments, enabling real-time sales tracking, inventory control, and secure billing.",
+      tech: ["C#", "WPF", "Sqlite", "MVVM"],
+      liveDemo: "", // Add if available
+      sourceCode: "https://github.com/Pasinduhansana/WRAPOS",
     },
     {
-      title: "Social Media Dashboard",
-      description: "Analytics dashboard for social media management and tracking.",
-      tech: ["React", "D3.js", "Node.js"],
-      liveDemo: "https://social-demo.com",
-      sourceCode: "https://github.com/username/social-dash"
-    }
+      title: "Learning Management System (LMS)",
+      description:
+        "An LMS designed to deliver educational content, track learner progress, and manage course interactions.",
+      tech: ["PHP", "MySQL", "Bootstrap", "JavaScript"],
+      liveDemo: "", // Add demo URL if available
+      sourceCode: "https://github.com/Pasinduhansana/LMS",
+    },
   ];
 
   const containerVariants = {
@@ -62,9 +96,9 @@ const Projects = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
-      }
-    }
+        staggerChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
@@ -73,24 +107,25 @@ const Projects = () => {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.5
-      }
-    }
+        duration: 0.5,
+      },
+    },
   };
 
   return (
-    <section id="projects" className="section bg-dark-300">
+    <section id="projects" className="section bg-dark-300 dark:bg-gray-50">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mb-12"
+          className="mb-6"
         >
           <h2 className="section-title">Featured Projects</h2>
           <p className="text-gray-400 max-w-2xl">
-            Here are some of my recent projects that showcase my expertise in web development and design.
+            Here are some of my recent projects that showcase my expertise in
+            web development and design.
           </p>
         </motion.div>
 
@@ -103,23 +138,25 @@ const Projects = () => {
               whileInView="visible"
               viewport={{ once: true }}
               variants={itemVariants}
-              className="project-card group relative overflow-hidden rounded-xl bg-dark-200 border border-white/10"
+              className="project-card group relative overflow-hidden rounded-xl bg-dark-200 dark:bg-white shadow-xl dark:border-none border border-white/10"
             >
-              <div className="aspect-video overflow-hidden">
+              <div className="aspect-video overflow-hidden m-4 border-[2px] border-gray-800 dark:border-gray-200 rounded-[6px]">
                 <img
                   src={project.image}
                   alt={project.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
-              <div className="p-6">
+              <div className="px-6 pb-4">
                 <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                <p className="text-gray-400 mb-4">{project.description}</p>
+                <p className="text-gray-400 mb-4 dark:text-gray-800">
+                  {project.description}
+                </p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tech.map((tech, techIndex) => (
                     <span
                       key={techIndex}
-                      className="px-3 py-1 text-sm bg-dark-300 rounded-full text-primary-400"
+                      className="px-3 py-1 text-sm bg-dark-300 dark:bg-white rounded-full text-primary-400"
                     >
                       {tech}
                     </span>
@@ -130,7 +167,7 @@ const Projects = () => {
                     href={project.liveDemo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-white hover:text-primary-500 transition-colors"
+                    className="flex items-center dark:text-gray-800 gap-2 text-white hover:text-primary-500 transition-colors"
                   >
                     <ExternalLink size={18} />
                     Live Demo
@@ -139,7 +176,7 @@ const Projects = () => {
                     href={project.sourceCode}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-white hover:text-primary-500 transition-colors"
+                    className="flex items-center dark:text-gray-800 gap-2 text-white hover:text-primary-500 transition-colors"
                   >
                     <Github size={18} />
                     Source Code
@@ -172,7 +209,7 @@ const Projects = () => {
             <motion.div
               key={index}
               variants={itemVariants}
-              className="bg-dark-200 p-6 rounded-xl border border-white/10 hover:border-primary-500/50 transition-all duration-300"
+              className="bg-dark-200 dark:bg-white dark:shadow-xl p-6 rounded-xl border border-white/10 hover:border-primary-500/50 transition-all duration-300"
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
@@ -180,7 +217,9 @@ const Projects = () => {
                 <Folder
                   size={40}
                   className={`transition-colors duration-300 ${
-                    hoveredIndex === index ? 'text-primary-500' : 'text-gray-400'
+                    hoveredIndex === index
+                      ? "text-primary-500"
+                      : "text-gray-400"
                   }`}
                 />
                 <div className="flex gap-3">
@@ -203,12 +242,14 @@ const Projects = () => {
                 </div>
               </div>
               <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-              <p className="text-gray-400 mb-4">{project.description}</p>
+              <p className="text-gray-400 dark:text-gray-600 mb-4">
+                {project.description}
+              </p>
               <div className="flex flex-wrap gap-2">
                 {project.tech.map((tech, techIndex) => (
                   <span
                     key={techIndex}
-                    className="text-sm text-primary-400"
+                    className="text-sm text-primary-400 dark:text-primary-500"
                   >
                     {tech}
                     {techIndex < project.tech.length - 1 && " • "}
