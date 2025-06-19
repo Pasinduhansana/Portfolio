@@ -109,6 +109,11 @@ const Hero = () => {
             <button
               href="#projects"
               className="flex flex-row items-center h-[40px] btn btn-primary"
+              onClick={() =>
+                document
+                  .getElementById("projects")
+                  .scrollIntoView({ behavior: "smooth" })
+              }
             >
               View My Work
               <ArrowRight size={18} />
@@ -116,6 +121,11 @@ const Hero = () => {
             <button
               href="#contact"
               className="flex flex-row items-center h-[40px] btn btn-outline"
+              onClick={() =>
+                document
+                  .getElementById("contact")
+                  .scrollIntoView({ behavior: "smooth" })
+              }
             >
               Contact Me
             </button>
