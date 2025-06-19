@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Minus, ExternalLink, Github } from "lucide-react";
-import disastermanagement from "../../assets/disastermanagement.png";
+import disastermanagement from "../../assets/DisasterManagement.png";
 import tracker_img from "../../assets/image.jpeg";
 import stellarQuaest from "../../assets/StellarQuest.png";
 
