@@ -44,7 +44,7 @@ const About = () => {
     },
     {
       year: "2024 - Part time",
-      role: "Full Stack Developer",
+      role: "Assosiate - full Stack Developer",
       company: "WebMinds",
       icon: Briefcase,
       description: "Developed and maintained full-stack web Applications",
@@ -99,19 +99,19 @@ const About = () => {
         "Contributed to open-source projects and community initiatives",
       ],
     },
-    {
-      year: "2025-2026",
-      degree: "CIMA Certificate in Business Accounting (CIMA CERT.)",
-      institution: "Wisdom Business Academy",
-      location: "Colombo, Sri Lanka",
-      highlights: [
-        "Reading CIMA Certificate in Business Accounting",
-        "Gained knowledge in financial management and accounting principles",
-        "Participated in workshops on business strategy and analysis",
-        "Achieved high distinction in all subjects",
-        "Engaged in case studies and real-world business scenarios",
-      ],
-    },
+    // {
+    //   year: "2025-2026",
+    //   degree: "CIMA Certificate in Business Accounting (CIMA CERT.)",
+    //   institution: "Wisdom Business Academy",
+    //   location: "Colombo, Sri Lanka",
+    //   highlights: [
+    //     "Reading CIMA Certificate in Business Accounting",
+    //     "Gained knowledge in financial management and accounting principles",
+    //     "Participated in workshops on business strategy and analysis",
+    //     "Achieved high distinction in all subjects",
+    //     "Engaged in case studies and real-world business scenarios",
+    //   ],
+    // },
   ];
 
   const containerVariants = {
