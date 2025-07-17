@@ -49,7 +49,7 @@ const Footer = () => {
         try {
           setTimeout(() => {
             setAnalyticsData({
-              visitors: Math.floor(Math.random() * 5000 + 8000), // Random between 8K-13K
+              visitors: Math.random() * 21 + 30,
               avgSessionDuration: `${
                 Math.floor(Math.random() * 3) + 2
               }:${Math.floor(Math.random() * 60)
@@ -188,7 +188,7 @@ const Footer = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center justify-center text-center md:text-left">
             <AnalyticsCard
               title="Total Visitors"
-              value={visitors ? `${(visitors / 1000).toFixed(1)}K` : null}
+              value={visitors ? `${visitors.toFixed(0)}` : null}
               isLoading={loading}
               error={error}
             />
