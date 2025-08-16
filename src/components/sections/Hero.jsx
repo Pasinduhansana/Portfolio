@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { TypeAnimation } from "react-type-animation";
-import image_path from "../../assets/profileimage.png";
+import image_path from "../../assets/profile1.png";
 
 const Hero = () => {
   const targetRef = useRef(null);
@@ -167,22 +167,28 @@ const Hero = () => {
             }}
           > */}
           <motion.div
-            className="relative order-1 lg:order-2"
+            className="relative order-1  lg:order-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <img
+            {/* <img
               src={image_path}
               alt="Developer Portrait"
               className="w-full lg:ml-20 h-auto object-cover max-w-[350px] ml-4 md:ml-0  rounded-3xl md:max-h-[500px] md:max-w-[400px] shadow-2xl dark:shadow-md dark:border-none rotate-3 border-4 border-dark-200"
+            /> */}
+
+            <img
+              src={image_path}
+              alt="Developer Portrait"
+              className="absolute -top-[400px] opacity-15 hover:opacity-50 animate-all duration-500 h-[800px] w-[580px]  left-10"
             />
 
             {/* Overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-dark-300 to-transparent opacity-30 rounded-3xl dark:hidden"></div>
 
             {/* Tech stack decorative elements */}
-            <div className="absolute left-5 md:-left-6 bottom-5 md:-bottom-6 bg-dark-200 dark:bg-white text-white p-4 rounded-xl shadow-xl border border-white/10 rotate-6">
+            <div className="absolute left-8 md:left-24 bottom-5 md:bottom-20 bg-dark-200 dark:bg-white text-white p-4 rounded-xl shadow-xl border border-white/10 rotate-6">
               <div className="text-xs font-medium text-primary-400">
                 Frontend
               </div>
@@ -191,7 +197,7 @@ const Hero = () => {
               </div>
             </div>
 
-            <div className="absolute -right-4 top-5 md:-top-4 bg-dark-200 text-white p-4 dark:bg-white rounded-xl shadow-lg border border-white/10 -rotate-6">
+            <div className="absolute -right-4 md:-right-8 top-5 md:top-2 bg-dark-200 text-white p-4 dark:bg-white rounded-xl shadow-lg border border-white/10 -rotate-6">
               <div className="text-xs font-medium text-accent-400">UI/UX</div>
               <div className="text-sm font-semibold dark:text-gray-800">
                 Tailwind CSS

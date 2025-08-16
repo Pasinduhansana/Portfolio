@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Header from "./components/layout/Header";
 import Hero from "./components/sections/Hero";
 import Projects from "./components/sections/Projects";
@@ -9,11 +14,17 @@ import Skills from "./components/sections/Skills";
 import Contact from "./components/sections/Contact";
 import Footer from "./components/layout/Footer";
 import Cursor from "./components/ui/Cursor";
+import ProjectsShowcase from "./components/sections/ProjectsShowcase";
 import { AnimatePresence } from "framer-motion";
 
-function App() {
+// Wrapper component to access location
+function AppContent() {
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const location = useLocation();
+
+  // Check if current path is projects showcase
+  const isProjectsShowcase = location.pathname === "/projects";
 
   useEffect(() => {
     const checkMobile = () => {
@@ -42,29 +53,36 @@ function App() {
   }
 
   return (
-    <Router>
-      <div className="bg-dark-300 bg-mesh min-h-screen">
-        {!isMobile && <Cursor />}
-        <Header />
+    <div className="bg-dark-300 bg-mesh min-h-screen">
+      {!isMobile && <Cursor />}
+      {!isProjectsShowcase && <Header />}
+      <AnimatePresence mode="wait">
         <Routes>
           <Route
             path="/"
             element={
               <main>
-                <AnimatePresence>
-                  <Hero />
-                  <Projects />
-                  <About />
-                  <Skills />
-                  <Contact />
-                </AnimatePresence>
+                <Hero />
+                <Projects />
+                <About />
+                <Skills />
+                <Contact />
               </main>
             }
           />
-          <Route path="/projects" element={<ProjectDetails />} />
+          <Route path="/projects" element={<ProjectsShowcase />} />
+          <Route path="/project/:id" element={<ProjectDetails />} />
         </Routes>
-        <Footer />
-      </div>
+      </AnimatePresence>
+      <Footer />
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }

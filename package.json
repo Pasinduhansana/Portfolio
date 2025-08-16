@@ -13,8 +13,10 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.77.0",
+    "clsx": "^2.1.1",
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.292.0",
+    "motion": "^12.23.12",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-ga4": "^2.1.0",
@@ -24,6 +26,7 @@
     "react-syntax-highlighter": "^15.5.0",
     "react-type-animation": "^3.2.0",
     "recharts": "^2.9.0",
+    "tailwind-merge": "^3.3.1",
     "zustand": "^4.4.6"
   },
   "devDependencies": {
