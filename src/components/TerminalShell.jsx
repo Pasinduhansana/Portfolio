@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const TerminalShell = ({ portfolioData }) => {
+const TerminalShell = ({ portfolioData, onSwitchToRetro, isEmbedded = false }) => {
   const [history, setHistory] = useState([]);
   const [currentInput, setCurrentInput] = useState('');
   const [commandHistory, setCommandHistory] = useState([]);
@@ -9,6 +9,8 @@ const TerminalShell = ({ portfolioData }) => {
   const [theme, setTheme] = useState('matrix'); // matrix, hacker, retro, modern
   const [username, setUsername] = useState('guest');
   const [isTyping, setIsTyping] = useState(false);
+  const [isLocked, setIsLocked] = useState(false);
+  const [challenge, setChallenge] = useState(null);
   const terminalRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -73,6 +75,7 @@ NAVIGATION:
   open <section>        - Open a section (projects/education/experience/contact)
   project <id>          - View detailed project information
   cd <section>          - Navigate to a section
+  cd desktop            - Return to desktop/Windows mode
   
 INFORMATION:
   whoami                - Display current user
@@ -95,7 +98,6 @@ UTILITIES:
   
 SYSTEM:
   help                  - Show this help message
-  exit                  - Return to mode selector
 
 Type any command to get started!`,
       type: 'text'
@@ -188,7 +190,17 @@ Feel free to reach out!`,
       }
     },
 
-    cd: (args) => commands.open(args),
+    cd: (args) => {
+      const section = args[0]?.toLowerCase();
+      if (section === 'desktop') {
+        // Switch to retro desktop mode with terminal window open
+        if (window.switchToRetro) {
+          window.switchToRetro(true);
+        }
+        return { output: '🖥️ Switching to desktop mode...', type: 'text' };
+      }
+      return commands.open(args);
+    },
 
     project: (args) => {
       const id = parseInt(args[0]);
@@ -371,11 +383,6 @@ Follow the white rabbit. 🐰
 
 Type 'clear' to stop the simulation.`,
       type: 'text'
-    }),
-
-    exit: () => ({
-      output: 'Exiting terminal... Use the mode toggle button to switch modes.',
-      type: 'text'
     })
   };
 
@@ -394,6 +401,58 @@ Current theme: ${theme} | User: ${username}`,
   }, []);
 
   useEffect(() => {
+    // Expose switch function to window for cd desktop command
+    if (onSwitchToRetro) {
+      window.switchToRetro = onSwitchToRetro;
+    }
+    return () => {
+      delete window.switchToRetro;
+    };
+  }, [onSwitchToRetro]);
+
+  useEffect(() => {
+    const handleSecurityViolation = (e) => {
+      const violationType = e.detail?.type || 'unknown';
+      setIsLocked(true);
+      setHistory([]); // Clear history to focus on the alert
+      
+      // Generate a random challenge
+      const num1 = Math.floor(Math.random() * 50) + 10;
+      const num2 = Math.floor(Math.random() * 50) + 10;
+      const answer = num1 + num2;
+      
+      setChallenge({
+        type: 'math',
+        question: `CALCULATE CHECKSUM: ${num1} + ${num2} = ?`,
+        answer: answer.toString()
+      });
+
+      setHistory([{
+        command: 'SYSTEM_ALERT',
+        output: `
+██████╗ ███████╗███╗   ██╗██╗███████╗██████╗ 
+██╔══██╗██╔════╝████╗  ██║██║██╔════╝██╔══██╗
+██║  ██║█████╗  ██╔██╗ ██║██║█████╗  ██║  ██║
+██║  ██║██╔══╝  ██║╚██╗██║██║██╔══╝  ██║  ██║
+██████╔╝███████╗██║ ╚████║██║███████╗██████╔╝
+╚═════╝ ╚══════╝╚═╝  ╚═══╝╚═╝╚══════╝╚═════╝ 
+
+⚠️ SECURITY VIOLATION DETECTED: ${violationType.toUpperCase()}
+⚠️ UNAUTHORIZED ACTION INTERCEPTED
+⚠️ SYSTEM LOCKDOWN INITIATED
+
+To regain access, verify admin privileges by solving the challenge below.
+`,
+        type: 'error',
+        timestamp: new Date()
+      }]);
+    };
+
+    window.addEventListener('security-violation', handleSecurityViolation);
+    return () => window.removeEventListener('security-violation', handleSecurityViolation);
+  }, []);
+
+  useEffect(() => {
     if (terminalRef.current) {
       terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
@@ -402,6 +461,41 @@ Current theme: ${theme} | User: ${username}`,
   const handleCommand = (cmd) => {
     const trimmedCmd = cmd.trim();
     if (!trimmedCmd) return;
+
+    // Handle Security Lockdown
+    if (isLocked) {
+      setHistory(prev => [...prev, {
+        command: trimmedCmd,
+        output: '',
+        type: 'input',
+        timestamp: new Date()
+      }]);
+
+      if (trimmedCmd === challenge.answer) {
+        setIsLocked(false);
+        setChallenge(null);
+        setHistory(prev => [...prev, {
+          command: '',
+          output: `
+✅ ACCESS GRANTED
+✅ SYSTEM RESTORED
+✅ WELCOME BACK, ADMIN
+
+Type 'help' for available commands.
+`,
+          type: 'success',
+          timestamp: new Date()
+        }]);
+      } else {
+        setHistory(prev => [...prev, {
+          command: '',
+          output: `❌ ACCESS DENIED. INCORRECT CHECKSUM. TRY AGAIN.\n${challenge.question}`,
+          type: 'error',
+          timestamp: new Date()
+        }]);
+      }
+      return;
+    }
 
     const [command, ...args] = trimmedCmd.split(' ');
     
@@ -477,38 +571,44 @@ Current theme: ${theme} | User: ${username}`,
     }
   };
 
+  const containerClass = isEmbedded 
+    ? `h-full w-full flex flex-col font-mono text-sm ${currentTheme.bg} overflow-hidden`
+    : `w-full h-screen ${currentTheme.bg} font-mono flex flex-col`;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className={`w-full h-screen ${currentTheme.bg} font-mono flex flex-col`}
+      className={containerClass}
       onClick={() => inputRef.current?.focus()}
     >
-      {/* Terminal Header */}
-      <div className={`${currentTheme.header} px-4 py-2 flex items-center justify-between border-b-2`}>
-        <div className="flex items-center gap-2">
-          <div className="flex gap-1.5">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+      {/* Terminal Header - Hide if embedded */}
+      {!isEmbedded && (
+        <div className={`${currentTheme.header} px-4 py-2 flex items-center justify-between border-b-2`}>
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1.5">
+              <div className="w-3 h-3 rounded-full bg-red-500"></div>
+              <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+              <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            </div>
+            <span className={`${currentTheme.text} text-sm ml-2`}>
+              {isLocked ? 'SYSTEM LOCKDOWN' : `${username}@portfolio:~$`}
+            </span>
           </div>
-          <span className={`${currentTheme.text} text-sm ml-2`}>
-            {username}@portfolio:~$
-          </span>
+          <div className="flex items-center gap-4">
+            <span className={`${currentTheme.accent} text-xs`}>Theme: {theme}</span>
+            <span className={`${currentTheme.accent} text-xs`}>
+              {new Date().toLocaleTimeString()}
+            </span>
+          </div>
         </div>
-        <div className="flex items-center gap-4">
-          <span className={`${currentTheme.accent} text-xs`}>Theme: {theme}</span>
-          <span className={`${currentTheme.accent} text-xs`}>
-            {new Date().toLocaleTimeString()}
-          </span>
-        </div>
-      </div>
+      )}
       
       {/* Terminal Body */}
       <div 
         ref={terminalRef}
-        className="flex-1 overflow-y-auto p-4 space-y-2 cursor-text"
+        className={`flex-1 overflow-y-auto p-4 space-y-2 cursor-text ${isLocked ? 'text-red-500' : ''}`}
       >
         <AnimatePresence>
           {history.map((entry, index) => (
@@ -520,14 +620,19 @@ Current theme: ${theme} | User: ${username}`,
             >
               {entry.command && (
                 <div className="flex gap-2">
-                  <span className={`${currentTheme.prompt} font-bold`}>
-                    {username}@portfolio:~$
+                  <span className={`${isLocked ? 'text-red-500' : currentTheme.prompt} font-bold`}>
+                    {isLocked ? '🔒 LOCKED >' : `${username}@portfolio:~$`}
                   </span>
-                  <span className={currentTheme.text}>{entry.command}</span>
+                  <span className={isLocked ? 'text-red-400' : currentTheme.text}>{entry.command}</span>
                 </div>
               )}
               {entry.output && (
-                <pre className={`${entry.type === 'error' ? currentTheme.error : currentTheme.text} whitespace-pre-wrap font-mono text-sm leading-relaxed pl-0`}>
+                <pre className={`${
+                  entry.type === 'error' ? (isLocked ? 'text-red-500 font-bold' : currentTheme.error) : 
+                  entry.type === 'success' ? (isLocked ? 'text-green-500' : 'text-green-400') : 
+                  entry.type === 'warning' ? 'text-yellow-400' : 
+                  (isLocked ? 'text-red-400' : currentTheme.text)
+                } whitespace-pre-wrap font-mono text-sm leading-relaxed pl-0`}>
                   {entry.output}
                 </pre>
               )}
@@ -537,35 +642,36 @@ Current theme: ${theme} | User: ${username}`,
         
         {/* Input Line */}
         <div className="flex gap-2 items-center">
-          <span className={`${currentTheme.prompt} font-bold`}>
-            {username}@portfolio:~$
+          <span className={`${isLocked ? 'text-red-500' : currentTheme.prompt} font-bold`}>
+            {isLocked ? '🔒 LOCKED >' : `${username}@portfolio:~$`}
           </span>
           <input
             ref={inputRef}
             type="text"
-            className={`flex-1 bg-transparent border-none outline-none ${currentTheme.text} font-mono caret-current`}
+            className={`flex-1 bg-transparent border-none outline-none ring-0 focus:ring-0 focus:outline-none ${isLocked ? 'text-red-500' : currentTheme.text} font-mono caret-transparent text-base`}
             value={currentInput}
             onChange={(e) => setCurrentInput(e.target.value)}
             onKeyDown={handleKeyDown}
             autoFocus
             spellCheck={false}
+            placeholder={isLocked ? challenge?.question : ''}
           />
           <motion.span
             animate={{ opacity: [1, 0] }}
             transition={{ duration: 0.8, repeat: Infinity }}
-            className={`w-2 h-4 ${currentTheme.prompt} inline-block`}
-          >
-            ▊
-          </motion.span>
+            className={`w-2.5 h-5 ${isLocked ? 'bg-red-500' : currentTheme.prompt.replace('text-', 'bg-')} inline-block -ml-1`}
+          />
         </div>
       </div>
 
-      {/* Status Bar */}
-      <div className={`${currentTheme.header} px-4 py-1 flex items-center justify-between text-xs border-t-2 ${currentTheme.text}`}>
-        <span>Commands: {commandHistory.length}</span>
-        <span>Press Ctrl+L to clear | Ctrl+C to cancel | Tab for autocomplete</span>
-        <span>Lines: {history.length}</span>
-      </div>
+      {/* Status Bar - Hide if embedded */}
+      {!isEmbedded && (
+        <div className={`${currentTheme.header} px-4 py-1 flex items-center justify-between text-xs border-t-2 ${currentTheme.text}`}>
+          <span>Commands: {commandHistory.length}</span>
+          <span>Press Ctrl+L to clear | Ctrl+C to cancel | Tab for autocomplete</span>
+          <span>Lines: {history.length}</span>
+        </div>
+      )}
     </motion.div>
   );
 };

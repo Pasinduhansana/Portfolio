@@ -1,5 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { 
+  X, Minus, Square, ArrowLeft, ArrowRight, RotateCw, Home, Search, Lock, Info, 
+  Folder, FileText, Code, Cpu, Layers, Globe, Database, Terminal, Download, 
+  Mail, Phone, MapPin, Github, Linkedin, ExternalLink, Briefcase, GraduationCap, 
+  User, Settings, HardDrive, AlertTriangle 
+} from 'lucide-react';
+import TerminalShell from './TerminalShell';
 
 const Window = ({ window: windowData, onClose, onMinimize, onMaximize, onFocus, portfolioData, onDragStart, onDragEnd, isAnyWindowDragging }) => {
   const [position, setPosition] = useState(windowData.position);
@@ -230,33 +237,12 @@ const Window = ({ window: windowData, onClose, onMinimize, onMaximize, onFocus, 
 
       case 'terminal':
         return (
-          <div className="flex flex-col h-full bg-black text-green-400 font-mono p-2 overflow-hidden">
-            <div className="mb-2 text-sm opacity-70">Microsoft Windows [Version 10.0.19045.4291]</div>
-            <div className="mb-4 text-sm opacity-70">(c) Microsoft Corporation. All rights reserved.</div>
-            
-            <div className="flex-1 overflow-y-auto">
-              <div className="mb-2">
-                <span className="text-white">C:\Users\Guest\Portfolio&gt;</span>
-                <span className="ml-2">dir</span>
-              </div>
-              <div className="mb-2 opacity-80">
-                <div className="grid grid-cols-[100px_1fr] gap-2 text-sm">
-                  <div>05/20/2024</div><div>&lt;DIR&gt; Projects</div>
-                  <div>05/20/2024</div><div>&lt;DIR&gt; Education</div>
-                  <div>05/20/2024</div><div>&lt;DIR&gt; Experience</div>
-                  <div>05/20/2024</div><div>resume.pdf</div>
-                  <div>05/20/2024</div><div>skills.txt</div>
-                </div>
-              </div>
-              <div className="mt-4">
-                <span className="text-white">C:\Users\Guest\Portfolio&gt;</span>
-                <span className="ml-2 animate-pulse">_</span>
-              </div>
-            </div>
-            
-            <div className="mt-2 p-2 bg-gray-900 border-t border-gray-800 text-xs text-gray-400 text-center">
-              Maximize this window to enter full Terminal Mode
-            </div>
+          <div className="h-full w-full bg-black overflow-hidden">
+            <TerminalShell 
+              portfolioData={portfolioData} 
+              onSwitchToRetro={() => {}} 
+              isEmbedded={true}
+            />
           </div>
         );
 
@@ -305,230 +291,375 @@ const Window = ({ window: windowData, onClose, onMinimize, onMaximize, onFocus, 
           </div>
         );
 
-      case 'education':
+
+
+      case 'explorer':
+        const folderContent = windowData.data;
+        const isProjectsFolder = folderContent?.name === 'Projects';
+        
         return (
-          <div className="p-4 space-y-4 overflow-y-auto h-full bg-gray-50">
-            {portfolioData.education.map((edu, index) => (
-              <div key={index} className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
-                <div className="flex items-start gap-4">
-                  <div className="text-4xl p-3 bg-purple-50 rounded-xl">🎓</div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-1">{edu.degree}</h3>
-                    <p className="text-purple-600 font-semibold mb-2">{edu.institution}</p>
-                    <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
-                      <span className="flex items-center gap-1">📅 {edu.year}</span>
-                      <span className="flex items-center gap-1">📍 {edu.location}</span>
-                      {edu.gpa && <span className="flex items-center gap-1">🏆 GPA: {edu.gpa}</span>}
-                    </div>
-                    <p className="text-gray-700 leading-relaxed text-sm">{edu.description}</p>
+          <div className="flex flex-col h-full bg-white">
+            {/* Explorer Toolbar */}
+            <div className="bg-gray-100 border-b border-gray-300 p-2 flex items-center gap-2">
+              <div className="flex gap-1">
+                <button className="p-1 hover:bg-gray-200 rounded text-gray-500">⬅️</button>
+                <button className="p-1 hover:bg-gray-200 rounded text-gray-500">➡️</button>
+                <button className="p-1 hover:bg-gray-200 rounded text-gray-500">⬆️</button>
+              </div>
+              <div className="flex-1 bg-white border border-gray-300 rounded px-3 py-1 text-sm flex items-center gap-2">
+                <span className="text-gray-500">📁</span>
+                <span>C:\Users\Guest\Desktop\{folderContent?.name || 'Folder'}</span>
+              </div>
+              <div className="flex gap-2">
+                <input type="text" placeholder="Search" className="bg-white border border-gray-300 rounded px-3 py-1 text-sm w-40" />
+              </div>
+            </div>
+
+            {/* Explorer Content */}
+            <div className="flex-1 p-4 overflow-y-auto">
+              {isProjectsFolder ? (
+                <div className="space-y-6">
+                  {['Web Projects', 'Macro Projects', 'Applications', 'Automation', 'Designs'].map((category) => {
+                    const categoryProjects = portfolioData.projects.filter(p => p.category === category || (!p.category && category === 'Web Projects'));
+                    if (categoryProjects.length === 0) return null;
+                    
+                    return (
+                      <div key={category}>
+                        <h3 className="text-gray-500 font-bold mb-3 border-b border-gray-200 pb-1">{category}</h3>
+                        <div className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-4">
+                          {categoryProjects.map((project, i) => (
+                            <div key={i} className="group flex flex-col items-center gap-2 p-2 rounded hover:bg-blue-50 cursor-pointer text-center">
+                              <div className="text-4xl group-hover:scale-105 transition-transform">
+                                {category === 'Web Projects' ? '🌐' : 
+                                 category === 'Macro Projects' ? '📊' :
+                                 category === 'Applications' ? '📱' : '📁'}
+                              </div>
+                              <span className="text-sm text-gray-700 group-hover:text-blue-600 line-clamp-2">{project.title}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-4">
+                  {/* Default view for other folders */}
+                  <div className="text-gray-500 italic text-center col-span-full mt-10">
+                    Folder is empty
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Status Bar */}
+            <div className="bg-gray-50 border-t border-gray-200 px-4 py-1 text-xs text-gray-500 flex justify-between">
+              <span>{isProjectsFolder ? `${portfolioData.projects.length} items` : '0 items'}</span>
+              <span>Local Disk (C:)</span>
+            </div>
+          </div>
+        );
+
+      case 'properties':
+        const item = windowData.data;
+        return (
+          <div className="p-4 bg-gray-50 h-full text-sm select-none">
+            <div className="flex items-center gap-4 mb-6 pb-6 border-b border-gray-300">
+              <div className="text-5xl">{item?.icon || '📄'}</div>
+              <div>
+                <div className="font-bold text-lg text-gray-900">{item?.name || 'Unknown'}</div>
+                <div className="text-gray-500">{item?.type === 'folder' ? 'File folder' : 'File'}</div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="grid grid-cols-[100px_1fr] gap-2">
+                <div className="text-gray-500">Type:</div>
+                <div>{item?.type === 'folder' ? 'File folder' : 'System File'}</div>
+                
+                <div className="text-gray-500">Location:</div>
+                <div>C:\Users\Guest\Desktop</div>
+                
+                <div className="text-gray-500">Size:</div>
+                <div>{item?.type === 'folder' ? '4.0 KB' : '1.2 MB'}</div>
+                
+                <div className="text-gray-500">Created:</div>
+                <div>{new Date().toLocaleDateString()}</div>
+              </div>
+
+              <div className="pt-4 border-t border-gray-300">
+                <div className="flex gap-6">
+                  <div className="text-gray-500">Attributes:</div>
+                  <div className="space-y-1">
+                    <label className="flex items-center gap-2">
+                      <input type="checkbox" checked readOnly className="rounded border-gray-300" />
+                      Read-only
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input type="checkbox" className="rounded border-gray-300" />
+                      Hidden
+                    </label>
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div className="absolute bottom-4 right-4 flex gap-2">
+              <button onClick={onClose} className="px-4 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 shadow-sm">OK</button>
+              <button onClick={onClose} className="px-4 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 shadow-sm">Cancel</button>
+            </div>
+          </div>
+        );
+
+
+
+      case 'education':
+        return (
+          <div className="p-6 space-y-4 overflow-y-auto h-full bg-gradient-to-br from-gray-900 to-black">
+            <div className="mb-4 border-b border-green-500/30 pb-3">
+              <h3 className="text-2xl font-bold text-green-400 font-mono">EDUCATION</h3>
+            </div>
+            {portfolioData.education.map((edu, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-black/40 backdrop-blur-xl border-2 border-green-500/30 rounded-xl p-4 hover:border-green-500/50 transition-all"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="text-4xl">🎓</div>
+                  <div className="flex-1">
+                    <h4 className="text-lg font-bold text-white mb-2">{edu.degree}</h4>
+                    <div className="text-green-400 text-sm font-mono mb-2">{edu.institution}</div>
+                    <div className="text-gray-400 text-xs font-mono mb-3">{edu.year}</div>
+                    <p className="text-gray-300 text-sm leading-relaxed">{edu.description}</p>
+                    {edu.gpa && (
+                      <div className="mt-3 inline-block px-3 py-1 bg-green-500/20 border border-green-500/30 rounded-lg">
+                        <span className="text-green-400 text-xs font-mono">GPA: {edu.gpa}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
             ))}
           </div>
         );
 
       case 'experience':
         return (
-          <div className="p-4 space-y-4 overflow-y-auto h-full bg-gray-50">
+          <div className="p-6 space-y-4 overflow-y-auto h-full bg-gradient-to-br from-gray-900 to-black">
+            <div className="mb-4 border-b border-green-500/30 pb-3">
+              <h3 className="text-2xl font-bold text-green-400 font-mono">EXPERIENCE</h3>
+            </div>
             {portfolioData.experience.map((exp, index) => (
-              <div key={index} className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-green-400 to-blue-500"></div>
-                <div className="flex items-start gap-4 pl-2">
-                  <div className="text-4xl p-3 bg-green-50 rounded-xl">💼</div>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-black/40 backdrop-blur-xl border-2 border-green-500/30 rounded-xl p-4 hover:border-green-500/50 transition-all"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="text-4xl">💼</div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-1">{exp.title}</h3>
-                    <p className="text-green-600 font-semibold mb-2">{exp.company}</p>
-                    <p className="text-gray-500 text-sm mb-4 italic flex items-center gap-2">
-                      <span>📅</span> {exp.period}
-                    </p>
-                    <p className="text-gray-700 leading-relaxed text-sm whitespace-pre-line">
-                      {exp.description}
-                    </p>
+                    <h4 className="text-lg font-bold text-white mb-2">{exp.title}</h4>
+                    <div className="text-green-400 text-sm font-mono mb-2">{exp.company}</div>
+                    <div className="text-gray-400 text-xs font-mono mb-3">{exp.period}</div>
+                    <p className="text-gray-300 text-sm leading-relaxed">{exp.description}</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         );
 
       case 'contact':
         return (
-          <div className="p-8 space-y-6 h-full flex flex-col justify-center bg-gray-50">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                <div className="text-4xl mb-4">📧</div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1">Email</h3>
-                <a href={`mailto:${portfolioData.contact.email}`} className="text-blue-600 hover:underline">
-                  {portfolioData.contact.email}
-                </a>
+          <div className="h-full bg-gradient-to-br from-gray-900 to-black p-6 overflow-y-auto">
+            <div className="max-w-md mx-auto">
+              <div className="mb-6 border-b border-green-500/30 pb-4">
+                <h3 className="text-2xl font-bold text-green-400 font-mono">CONTACT INFO</h3>
+                <p className="text-gray-400 text-xs font-mono mt-2">Get in touch with me</p>
               </div>
-              
-              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                <div className="text-4xl mb-4">📱</div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1">Phone</h3>
-                <a href={`tel:${portfolioData.contact.phone}`} className="text-blue-600 hover:underline">
-                  {portfolioData.contact.phone}
-                </a>
+
+              <div className="space-y-3">
+                {/* Email */}
+                <div className="bg-black/40 backdrop-blur-xl border-2 border-green-500/30 rounded-xl p-3 hover:border-green-500/50 transition-all group">
+                  <div className="flex items-center gap-3">
+                    <div className="text-2xl">📧</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-gray-400 text-[10px] font-mono uppercase mb-1">Email</div>
+                      <a href={`mailto:${portfolioData.contact.email}`} className="text-white text-sm font-mono hover:text-green-400 transition-colors block truncate">
+                        {portfolioData.contact.email}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Phone */}
+                <div className="bg-black/40 backdrop-blur-xl border-2 border-green-500/30 rounded-xl p-3 hover:border-green-500/50 transition-all group">
+                  <div className="flex items-center gap-3">
+                    <div className="text-2xl">📱</div>
+                    <div className="flex-1">
+                      <div className="text-gray-400 text-[10px] font-mono uppercase mb-1">Phone</div>
+                      <a href={`tel:${portfolioData.contact.phone}`} className="text-white text-sm font-mono hover:text-green-400 transition-colors">
+                        {portfolioData.contact.phone}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Location */}
+                {portfolioData.contact.location && (
+                  <div className="bg-black/40 backdrop-blur-xl border-2 border-green-500/30 rounded-xl p-3">
+                    <div className="flex items-center gap-3">
+                      <div className="text-2xl">📍</div>
+                      <div className="flex-1">
+                        <div className="text-gray-400 text-[10px] font-mono uppercase mb-1">Location</div>
+                        <div className="text-white text-sm font-mono">{portfolioData.contact.location}</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* GitHub */}
+                <div className="bg-black/40 backdrop-blur-xl border-2 border-green-500/30 rounded-xl p-3 hover:border-green-500/50 transition-all group">
+                  <div className="flex items-center gap-3">
+                    <div className="text-2xl">💻</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-gray-400 text-[10px] font-mono uppercase mb-1">GitHub</div>
+                      <a href={portfolioData.contact.github} target="_blank" rel="noopener noreferrer" className="text-white text-sm font-mono hover:text-green-400 transition-colors block truncate">
+                        {portfolioData.contact.github.replace('https://', '')}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* LinkedIn */}
+                <div className="bg-black/40 backdrop-blur-xl border-2 border-green-500/30 rounded-xl p-3 hover:border-green-500/50 transition-all group">
+                  <div className="flex items-center gap-3">
+                    <div className="text-2xl">💼</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-gray-400 text-[10px] font-mono uppercase mb-1">LinkedIn</div>
+                      <a href={portfolioData.contact.linkedin} target="_blank" rel="noopener noreferrer" className="text-white text-sm font-mono hover:text-green-400 transition-colors block truncate">
+                        {portfolioData.contact.linkedin.replace('https://', '')}
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
-              
-              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                <div className="text-4xl mb-4">💻</div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1">GitHub</h3>
-                <a href={portfolioData.contact.github} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                  View Profile
-                </a>
-              </div>
-              
-              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                <div className="text-4xl mb-4">💼</div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1">LinkedIn</h3>
-                <a href={portfolioData.contact.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                  Connect
-                </a>
-              </div>
-            </div>
-            
-            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm text-center">
-              <div className="text-4xl mb-4">📍</div>
-              <h3 className="text-lg font-bold text-gray-900 mb-1">Location</h3>
-              <p className="text-gray-600">{portfolioData.contact.location}</p>
             </div>
           </div>
         );
 
       case 'skills':
         return (
-          <div className="p-6 space-y-8 overflow-y-auto h-full bg-gray-50">
-            {/* Coding Skills */}
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2 pb-2 border-b border-gray-200">
-                <span className="text-2xl">💻</span> Coding Skills
-              </h3>
-              <div className="flex flex-wrap gap-3">
-                {portfolioData.skills.coding.map((skill, i) => (
-                  <span key={i} className="px-4 py-2 bg-white text-blue-700 rounded-lg text-sm font-medium border border-blue-100 shadow-sm hover:shadow-md transition-shadow cursor-default">
-                    {skill}
-                  </span>
-                ))}
-              </div>
+          <div className="h-full bg-gradient-to-br from-gray-900 to-black p-6 overflow-y-auto">
+            <div className="mb-6 border-b border-green-500/30 pb-4">
+              <h3 className="text-2xl font-bold text-green-400 font-mono">SKILLS & EXPERTISE</h3>
             </div>
 
-            {/* Professional Skills */}
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2 pb-2 border-b border-gray-200">
-                <span className="text-2xl">⚙️</span> Professional Skills
-              </h3>
-              <div className="flex flex-wrap gap-3">
-                {portfolioData.skills.professional.map((skill, i) => (
-                  <span key={i} className="px-4 py-2 bg-white text-purple-700 rounded-lg text-sm font-medium border border-purple-100 shadow-sm hover:shadow-md transition-shadow cursor-default">
-                    {skill}
-                  </span>
-                ))}
+            <div className="space-y-6">
+              {/* Coding Skills */}
+              <div>
+                <h4 className="text-green-400 font-mono text-sm mb-3 flex items-center gap-2">
+                  <span>💻</span> CODING
+                </h4>
+                <div className="grid grid-cols-2 gap-2">
+                  {portfolioData.skills.coding.map((skill, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="bg-black/40 backdrop-blur-xl border border-green-500/30 rounded-lg px-3 py-2 text-white text-xs font-mono hover:border-green-500/50 hover:bg-green-500/10 transition-all"
+                    >
+                      {skill}
+                    </motion.div>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {/* General Skills */}
-            <div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2 pb-2 border-b border-gray-200">
-                <span className="text-2xl">🧠</span> General Skills
-              </h3>
-              <div className="flex flex-wrap gap-3">
-                {portfolioData.skills.general.map((skill, i) => (
-                  <span key={i} className="px-4 py-2 bg-white text-green-700 rounded-lg text-sm font-medium border border-green-100 shadow-sm hover:shadow-md transition-shadow cursor-default">
-                    {skill}
-                  </span>
-                ))}
+              {/* Professional Skills */}
+              <div>
+                <h4 className="text-green-400 font-mono text-sm mb-3 flex items-center gap-2">
+                  <span>🛠️</span> PROFESSIONAL
+                </h4>
+                <div className="grid grid-cols-2 gap-2">
+                  {portfolioData.skills.professional.map((skill, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="bg-black/40 backdrop-blur-xl border border-green-500/30 rounded-lg px-3 py-2 text-white text-xs font-mono hover:border-green-500/50 hover:bg-green-500/10 transition-all"
+                    >
+                      {skill}
+                    </motion.div>
+                  ))}
+                </div>
               </div>
+
+              {/* General Skills */}
+              {portfolioData.skills.general && (
+                <div>
+                  <h4 className="text-green-400 font-mono text-sm mb-3 flex items-center gap-2">
+                    <span>⚡</span> GENERAL
+                  </h4>
+                  <div className="grid grid-cols-2 gap-2">
+                    {portfolioData.skills.general.map((skill, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: index * 0.05 }}
+                        className="bg-black/40 backdrop-blur-xl border border-green-500/30 rounded-lg px-3 py-2 text-white text-xs font-mono hover:border-green-500/50 hover:bg-green-500/10 transition-all"
+                      >
+                        {skill}
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         );
 
       case 'resume':
         return (
-          <div className="h-full flex flex-col bg-gray-50">
-            {/* PDF Viewer */}
-            <div className="flex-1 bg-white border-b border-gray-300 overflow-auto p-8">
-              <div className="max-w-3xl mx-auto bg-white shadow-lg p-12 min-h-full">
-                {/* Resume Header */}
-                <div className="text-center mb-8 border-b-2 border-gray-300 pb-6">
-                  <h1 className="text-4xl font-bold text-gray-900 mb-2">Pasindu Hansana</h1>
-                  <p className="text-xl text-gray-600 mb-3">Full Stack Developer | Supply Chain Analyst</p>
-                  <div className="flex justify-center gap-4 text-sm text-gray-600 flex-wrap">
-                    <span>📧 {portfolioData.contact.email}</span>
-                    <span>📱 {portfolioData.contact.phone}</span>
-                    <span>📍 {portfolioData.contact.location}</span>
-                  </div>
-                </div>
-
-                {/* Professional Summary */}
-                <div className="mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-3 border-b border-gray-300 pb-2">
-                    Professional Summary
-                  </h2>
-                  <p className="text-gray-700 leading-relaxed">
-                    Dedicated IT undergraduate and Full Stack Developer with experience in building robust web applications and optimizing supply chain processes. 
-                    Skilled in React, Node.js, and .NET technologies. Passionate about leveraging technology to solve complex business problems.
-                  </p>
-                </div>
-
-                {/* Experience */}
-                <div className="mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-3 border-b border-gray-300 pb-2">
-                    Work Experience
-                  </h2>
-                  {portfolioData.experience.map((exp, i) => (
-                    <div key={i} className="mb-4">
-                      <div className="flex justify-between items-baseline">
-                        <h3 className="text-lg font-bold text-gray-900">{exp.title}</h3>
-                        <span className="text-sm text-gray-500 font-medium">{exp.period}</span>
-                      </div>
-                      <p className="text-gray-600 italic mb-1">{exp.company}</p>
-                      <p className="text-gray-700 text-sm leading-relaxed">{exp.description.substring(0, 150)}...</p>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Education */}
-                <div className="mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-3 border-b border-gray-300 pb-2">
-                    Education
-                  </h2>
-                  {portfolioData.education.map((edu, i) => (
-                    <div key={i} className="mb-3">
-                      <div className="flex justify-between items-baseline">
-                        <h3 className="text-lg font-bold text-gray-900">{edu.degree}</h3>
-                        <span className="text-sm text-gray-500 font-medium">{edu.year}</span>
-                      </div>
-                      <p className="text-gray-600 italic">{edu.institution}</p>
-                      <p className="text-gray-500 text-sm">{edu.location} | GPA: {edu.gpa}</p>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Skills */}
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-3 border-b border-gray-300 pb-2">
-                    Technical Skills
-                  </h2>
-                  <div className="text-gray-700 text-sm">
-                    <p className="mb-2"><strong>Languages & Frameworks:</strong> {portfolioData.skills.coding.slice(0, 8).join(', ')}</p>
-                    <p className="mb-2"><strong>Tools & Platforms:</strong> {portfolioData.skills.professional.slice(0, 6).join(', ')}</p>
-                  </div>
-                </div>
+          <div className="h-full flex flex-col bg-gray-900">
+            <div className="p-3 bg-black/50 backdrop-blur-md border-b border-green-500/30 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">📄</span>
+                <span className="text-green-400 font-mono text-sm">Resume.pdf</span>
               </div>
-            </div>
-
-            {/* Download Button */}
-            <div className="p-4 bg-gray-100 border-t border-gray-300 flex justify-center">
-              <a 
-                href={portfolioData.resumeUrl} 
+              <a
+                href={portfolioData.resumeUrl}
                 download="Pasindu_Hansana_CV.pdf"
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold flex items-center gap-2 transition-colors shadow-lg"
+                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg flex items-center gap-2 transition-colors shadow-[0_0_10px_rgba(34,197,94,0.3)] font-mono"
               >
-                <span>📥</span>
-                Download PDF
+                <Download size={16} />
+                DOWNLOAD_PDF
               </a>
+            </div>
+            <div className="flex-1 w-full relative bg-gray-800">
+              <object
+                data={portfolioData.resumeUrl}
+                type="application/pdf"
+                className="w-full h-full"
+              >
+                <div className="flex flex-col items-center justify-center h-full text-gray-400 p-8 text-center">
+                  <p className="mb-4">Unable to display PDF directly.</p>
+                  <a 
+                    href={portfolioData.resumeUrl} 
+                    download="Pasindu_Hansana_CV.pdf"
+                    className="text-green-400 hover:underline"
+                  >
+                    Click here to download
+                  </a>
+                </div>
+              </object>
             </div>
           </div>
         );
@@ -595,6 +726,8 @@ const Window = ({ window: windowData, onClose, onMinimize, onMaximize, onFocus, 
             {windowData.type === 'settings' && '⚙️'}
             {windowData.type === 'browser' && '🌐'}
             {windowData.type === 'terminal' && '💻'}
+            {windowData.type === 'explorer' && '📂'}
+            {windowData.type === 'properties' && 'ℹ️'}
           </span>
           <span className="capitalize">{windowData.type === 'browser' ? 'Chrome' : windowData.type}</span>
         </div>

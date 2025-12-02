@@ -3,22 +3,14 @@ import resumePDF from '../assets/Pasindu Hansana CV.pdf';
 export const portfolioData = {
   projects: [
     {
-      id: "po-tracker",
-      title: "Supplier PO Tracker V0.1",
-      description: "A robust C#/WPF desktop app for supplier PO tracking with real-time notifications, dashboard, and risk mitigation features.",
-      tech: ["C#", "WPF", "Desktop Application", "Real-time Notifications", "Dashboard UI", "Supplier Management"],
-      demo: "",
-      repo: "https://github.com/Pasinduhansana/PO-Tracker.git",
-      featured: false
-    },
-    {
       id: "disaster-management",
       title: "Natural Disaster Management System",
       description: "App for disaster reporting, community funding, dashboard features, and AI-based disaster prediction with real-time updates.",
       tech: ["MERN", "TailwindCSS", "Python", "Stripe", "AI Prediction Model"],
       demo: "https://guardianearth.netlify.app/",
       repo: "https://github.com/Pasinduhansana/Natural-Disaster-Management-System.git",
-      featured: true
+      featured: true,
+      category: "Web Projects"
     },
     {
       id: "stellar-quest",
@@ -27,7 +19,8 @@ export const portfolioData = {
       tech: ["React", "Firebase", "TailwindCSS", "Spring Boot", "Next.js", "Three.js"],
       demo: "",
       repo: "https://github.com/Pasinduhansana/StellarQuest.git",
-      featured: true
+      featured: true,
+      category: "Web Projects"
     },
     {
       id: "staff-management",
@@ -36,25 +29,8 @@ export const portfolioData = {
       tech: ["Java", "MySQL", "HTML/CSS", "Servlets"],
       demo: "",
       repo: "https://github.com/Pasinduhansana/staff-management-system",
-      featured: false
-    },
-    {
-      id: "thread-analysis",
-      title: "Thread Analysis Dashboard",
-      description: "A data visualization dashboard for analyzing thread production metrics and quality across units.",
-      tech: ["Power BI", "SQL", "Excel", "DAX"],
-      demo: "",
-      repo: "https://github.com/Pasinduhansana/thread-analysis-dashboard",
-      featured: false
-    },
-    {
-      id: "wrapos",
-      title: "WRAPOS - Point of Sale System",
-      description: "A custom POS solution for retail environments, enabling real-time sales tracking, inventory control, and secure billing.",
-      tech: ["C#", "WPF", "Sqlite", "MVVM"],
-      demo: "",
-      repo: "https://github.com/Pasinduhansana/WRAPOS",
-      featured: false
+      featured: false,
+      category: "Web Projects"
     },
     {
       id: "lms",
@@ -63,7 +39,38 @@ export const portfolioData = {
       tech: ["PHP", "MySQL", "Bootstrap", "JavaScript"],
       demo: "",
       repo: "https://github.com/Pasinduhansana/LMS",
-      featured: false
+      featured: false,
+      category: "Web Projects"
+    },
+    {
+      id: "thread-analysis",
+      title: "Thread Analysis Dashboard",
+      description: "A data visualization dashboard for analyzing thread production metrics and quality across units.",
+      tech: ["Power BI", "SQL", "Excel", "DAX"],
+      demo: "",
+      repo: "https://github.com/Pasinduhansana/thread-analysis-dashboard",
+      featured: false,
+      category: "Macro Projects"
+    },
+    {
+      id: "po-tracker",
+      title: "Supplier PO Tracker V0.1",
+      description: "A robust C#/WPF desktop app for supplier PO tracking with real-time notifications, dashboard, and risk mitigation features.",
+      tech: ["C#", "WPF", "Desktop Application", "Real-time Notifications", "Dashboard UI", "Supplier Management"],
+      demo: "",
+      repo: "https://github.com/Pasinduhansana/PO-Tracker.git",
+      featured: false,
+      category: "Applications"
+    },
+    {
+      id: "wrapos",
+      title: "WRAPOS - Point of Sale System",
+      description: "A custom POS solution for retail environments, enabling real-time sales tracking, inventory control, and secure billing.",
+      tech: ["C#", "WPF", "Sqlite", "MVVM"],
+      demo: "",
+      repo: "https://github.com/Pasinduhansana/WRAPOS",
+      featured: false,
+      category: "Applications"
     }
   ],
   education: [
